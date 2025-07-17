@@ -39,7 +39,9 @@ class TaskController extends Controller
 
     public function create(): View
     {
-        $projects = Project::where('status', '!=', 'completed')->get();
+        $projects = Project::whereIn('status', ['planning', 'in_progress', 'on_hold'])
+                          ->orderBy('name')
+                          ->get();
         return view('tasks.create', compact('projects'));
     }
 

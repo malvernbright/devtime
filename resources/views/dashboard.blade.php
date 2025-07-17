@@ -262,7 +262,7 @@
                                     <small class="text-muted">
                                         {{ $activity->activity_date->format('M d, Y') }}
                                         @if($activity->duration_minutes)
-                                            | {{ $activity->duration_minutes }} minutes
+                                            | @durationShort($activity->duration_minutes)
                                         @endif
                                         @if($activity->project)
                                             | {{ $activity->project->name }}

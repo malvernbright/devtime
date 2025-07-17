@@ -73,7 +73,7 @@
                             <label for="start_time" class="form-label">Start Time (Optional)</label>
                             <input type="time" class="form-control @error('start_time') is-invalid @enderror" 
                                    id="start_time" name="start_time" 
-                                   value="{{ old('start_time', $activity->start_time ? $activity->start_time->format('H:i') : '') }}">
+                                   value="{{ old('start_time', $activity->start_time) }}">>
                             @error('start_time')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -83,7 +83,7 @@
                             <label for="end_time" class="form-label">End Time (Optional)</label>
                             <input type="time" class="form-control @error('end_time') is-invalid @enderror" 
                                    id="end_time" name="end_time" 
-                                   value="{{ old('end_time', $activity->end_time ? $activity->end_time->format('H:i') : '') }}">
+                                   value="{{ old('end_time', $activity->end_time) }}">>
                             @error('end_time')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

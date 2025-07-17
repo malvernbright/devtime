@@ -162,7 +162,7 @@
                                     <small class="text-muted">
                                         {{ $activity->activity_date->format('M d') }}
                                         @if($activity->duration_minutes)
-                                            | {{ $activity->duration_minutes }}min
+                                            | @durationShort($activity->duration_minutes)
                                         @endif
                                     </small>
                                 </div>

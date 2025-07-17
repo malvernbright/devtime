@@ -58,7 +58,7 @@
                             @endif
                             
                             @if($tomorrowPlan->estimated_duration)
-                                <li><strong>Duration:</strong> {{ $tomorrowPlan->estimated_duration }} minutes</li>
+                                <li><strong>Duration:</strong> @duration($tomorrowPlan->estimated_duration)</li>
                             @endif
                             
                             <li><strong>Priority:</strong> 

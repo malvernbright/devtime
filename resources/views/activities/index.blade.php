@@ -102,7 +102,7 @@
                             </div>
                             <div class="col-md-2 text-center">
                                 <div class="fw-bold text-success">
-                                    {{ number_format($activity->duration_minutes / 60, 1) }}h
+                                    @durationShort($activity->duration_minutes)
                                 </div>
                                 <small class="text-muted">Duration</small>
                             </div>
@@ -163,11 +163,11 @@
                     <div class="text-muted small">Total Activities</div>
                 </div>
                 <div class="col-md-3">
-                    <div class="h4 text-success mb-1">{{ number_format($activities->sum('duration_minutes') / 60, 1) }}h</div>
+                    <div class="h4 text-success mb-1">@durationShort($activities->sum('duration_minutes'))</div>
                     <div class="text-muted small">Total Time</div>
                 </div>
                 <div class="col-md-3">
-                    <div class="h4 text-info mb-1">{{ number_format($activities->avg('duration_minutes') / 60, 1) }}h</div>
+                    <div class="h4 text-info mb-1">@durationShort($activities->avg('duration_minutes'))</div>
                     <div class="text-muted small">Average Duration</div>
                 </div>
                 <div class="col-md-3">

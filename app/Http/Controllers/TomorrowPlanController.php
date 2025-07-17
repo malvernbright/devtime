@@ -39,10 +39,20 @@ class TomorrowPlanController extends Controller
             'description' => 'nullable|string',
             'planned_date' => 'required|date',
             'start_time' => 'nullable|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
+            'end_time' => 'nullable|date_format:H:i',
             'estimated_duration' => 'nullable|integer|min:1',
             'priority' => 'required|in:low,medium,high,urgent',
         ]);
+
+        // Custom validation for end_time after start_time
+        if ($validated['start_time'] && $validated['end_time']) {
+            $startTime = \Carbon\Carbon::createFromFormat('H:i', $validated['start_time']);
+            $endTime = \Carbon\Carbon::createFromFormat('H:i', $validated['end_time']);
+            
+            if ($endTime->lte($startTime)) {
+                return back()->withErrors(['end_time' => 'The end time must be after start time.'])->withInput();
+            }
+        }
 
         $plan = TomorrowPlan::create($validated);
 
@@ -74,11 +84,21 @@ class TomorrowPlanController extends Controller
             'description' => 'nullable|string',
             'planned_date' => 'required|date',
             'start_time' => 'nullable|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
+            'end_time' => 'nullable|date_format:H:i',
             'estimated_duration' => 'nullable|integer|min:1',
             'priority' => 'required|in:low,medium,high,urgent',
             'is_completed' => 'boolean',
         ]);
+
+        // Custom validation for end_time after start_time
+        if ($validated['start_time'] && $validated['end_time']) {
+            $startTime = \Carbon\Carbon::createFromFormat('H:i', $validated['start_time']);
+            $endTime = \Carbon\Carbon::createFromFormat('H:i', $validated['end_time']);
+            
+            if ($endTime->lte($startTime)) {
+                return back()->withErrors(['end_time' => 'The end time must be after start time.'])->withInput();
+            }
+        }
 
         $tomorrowPlan->update($validated);
 

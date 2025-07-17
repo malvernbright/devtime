@@ -58,15 +58,21 @@ class ActivityController extends Controller
             'description' => 'required|string',
             'activity_date' => 'required|date',
             'start_time' => 'nullable|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
+            'end_time' => 'nullable|date_format:H:i',
             'duration_minutes' => 'required|integer|min:1',
             'notes' => 'nullable|string',
         ]);
 
-        // Calculate duration if start and end times are provided
+        // Validate that end_time is after start_time if both are provided
         if ($validated['start_time'] && $validated['end_time']) {
             $start = \Carbon\Carbon::createFromFormat('H:i', $validated['start_time']);
             $end = \Carbon\Carbon::createFromFormat('H:i', $validated['end_time']);
+            
+            if ($end->lte($start)) {
+                return back()->withErrors(['end_time' => 'The end time must be after the start time.'])->withInput();
+            }
+            
+            // Calculate duration
             $validated['duration_minutes'] = $start->diffInMinutes($end);
         }
 
@@ -99,15 +105,21 @@ class ActivityController extends Controller
             'description' => 'required|string',
             'activity_date' => 'required|date',
             'start_time' => 'nullable|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
+            'end_time' => 'nullable|date_format:H:i',
             'duration_minutes' => 'required|integer|min:1',
             'notes' => 'nullable|string',
         ]);
 
-        // Calculate duration if start and end times are provided
+        // Validate that end_time is after start_time if both are provided
         if ($validated['start_time'] && $validated['end_time']) {
             $start = \Carbon\Carbon::createFromFormat('H:i', $validated['start_time']);
             $end = \Carbon\Carbon::createFromFormat('H:i', $validated['end_time']);
+            
+            if ($end->lte($start)) {
+                return back()->withErrors(['end_time' => 'The end time must be after the start time.'])->withInput();
+            }
+            
+            // Calculate duration
             $validated['duration_minutes'] = $start->diffInMinutes($end);
         }
 

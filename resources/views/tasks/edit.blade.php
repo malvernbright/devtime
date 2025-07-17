@@ -107,7 +107,7 @@
                             <h6 class="alert-heading">Current Progress</h6>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <strong>Time Spent:</strong> {{ number_format($task->totalTimeSpent() / 60, 1) }} hours
+                                    <strong>Time Spent:</strong> @duration($task->totalTimeSpent())
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Activities:</strong> {{ $task->activities->count() }}

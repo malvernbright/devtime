@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-sm-9">
                         <span class="h5 text-success">
-                            <i class="fas fa-clock me-2"></i>{{ number_format($activity->duration_minutes / 60, 1) }} hours
+                            <i class="fas fa-clock me-2"></i>@duration($activity->duration_minutes)
                         </span>
                         <small class="text-muted ms-2">({{ $activity->duration_minutes }} minutes)</small>
                     </div>
@@ -237,7 +237,7 @@
                     
                     <div>
                         <strong>Total Time Spent:</strong><br>
-                        <span class="text-success">{{ number_format($activity->task->totalTimeSpent() / 60, 1) }} hours</span>
+                        <span class="text-success">@duration($activity->task->totalTimeSpent())</span>
                     </div>
                 </div>
             </div>

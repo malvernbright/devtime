@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Models\Activity;
 use App\Models\TomorrowPlan;
+use App\Helpers\TimeHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use PhpOffice\PhpWord\PhpWord;
@@ -79,7 +80,7 @@ class ReportController extends Controller
             $tasksDone[] = "\nTask Done";
             
             $table->addCell(4000)->addText(implode("\n", $tasksDone));
-            $table->addCell(1500)->addText(number_format($totalTime / 60, 1) . ' hours');
+            $table->addCell(1500)->addText(TimeHelper::formatDuration($totalTime));
             $table->addCell(1500)->addText('Done');
             $table->addCell(1500)->addText($project ? $project->deadline->format('d/m/Y') : '');
         }
@@ -140,7 +141,7 @@ class ReportController extends Controller
             
             $table->addCell(3000)->addText(implode(' - ', $projectTask));
             $table->addCell(6000)->addText($plan->description);
-            $table->addCell(2000)->addText(number_format($plan->estimated_duration / 60, 0) . 'hrs');
+            $table->addCell(2000)->addText(TimeHelper::formatDuration($plan->estimated_duration));
         }
         
         $fileName = 'Planned_Tasks_' . str_replace('-', '_', $date) . '.docx';

@@ -67,7 +67,7 @@
                         @if($plan->estimated_duration)
                             <div class="mb-3">
                                 <small class="text-muted">Duration</small>
-                                <div class="fw-bold">{{ $plan->estimated_duration }} minutes</div>
+                                <div class="fw-bold">@duration($plan->estimated_duration)</div>
                             </div>
                         @endif
 
