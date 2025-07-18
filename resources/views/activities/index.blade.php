@@ -1,24 +1,20 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Activities - DevTime')
 @section('page-title', 'Activities')
 
-@section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h4 class="mb-0">All Activities</h4>
-        <p class="text-muted mb-0">Track your daily development activities</p>
-    </div>
+@section('page-actions')
     <div class="btn-group" role="group">
         <a href="{{ route('activities.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i>Log Activity
         </a>
-        <a href="{{ route('reports.daily') }}?date={{ request('date_from', date('Y-m-d')) }}&consultant=Malvern" class="btn btn-outline-success">
-            <i class="fas fa-file-word me-2"></i>Export Daily Report
+        <a href="#" class="btn btn-outline-success" onclick="exportActivities()">
+            <i class="fas fa-file-export me-2"></i>Export Activities
         </a>
     </div>
-</div>
+@endsection
 
+@section('content')
 <!-- Filters -->
 <div class="card mb-4">
     <div class="card-body">
@@ -75,7 +71,7 @@
                                         <i class="fas fa-clock text-primary fa-lg"></i>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <h6 class="mb-1">{{ $activity->description }}</h6>
+                                        <h6 class="mb-1">{{ strip_tags($activity->description) }}</h6>
                                         <div class="d-flex flex-wrap gap-2 mb-2">
                                             @if($activity->project)
                                                 <span class="badge bg-primary">
@@ -207,7 +203,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 .catch(error => console.error('Error fetching tasks:', error));
         }
     });
+
+    // Export activities function
+    function exportActivities() {
+        const activities = @json($activities->toArray());
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Title,Description,Date,Start Time,End Time,Duration (minutes),Project,Task\n";
+        
+        activities.forEach(activity => {
+            const row = [
+                activity.title || '',
+                activity.description ? activity.description.replace(/"/g, '""') : '',
+                activity.activity_date,
+                activity.start_time || '',
+                activity.end_time || '',
+                activity.duration_minutes || '',
+                activity.project ? activity.project.name : '',
+                activity.task ? activity.task.title : ''
+            ].join(',');
+            csvContent += row + "\n";
+        });
+        
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "activities_export_" + new Date().toISOString().slice(0, 10) + ".csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 });
 </script>
-@endsection
 @endsection

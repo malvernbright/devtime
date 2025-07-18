@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Tomorrow Plans - DevTime')
 @section('page-title', 'Tomorrow Plans')
@@ -8,8 +8,8 @@
         <a href="{{ route('tomorrow-plans.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i>New Plan
         </a>
-        <a href="{{ route('reports.planned') }}?date={{ request('date', date('Y-m-d', strtotime('+1 day'))) }}&consultant=Malvern" class="btn btn-outline-success">
-            <i class="fas fa-file-word me-2"></i>Export Planned Tasks
+        <a href="#" class="btn btn-outline-success" onclick="exportTomorrowPlans()">
+            <i class="fas fa-file-export me-2"></i>Export Plans
         </a>
     </div>
 @endsection
@@ -35,7 +35,7 @@
                     </div>
                     <div class="card-body">
                         @if($plan->description)
-                            <p class="text-muted">{{ Str::limit($plan->description, 100) }}</p>
+                            <p class="text-muted">{{ Str::limit(strip_tags($plan->description), 100) }}</p>
                         @endif
                         
                         <div class="mb-3">
@@ -171,4 +171,37 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+function exportTomorrowPlans() {
+    const plans = @json($plans->toArray());
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Title,Description,Date,Start Time,End Time,Priority,Status,Project,Task\n";
+    
+    plans.forEach(plan => {
+        const row = [
+            plan.title || '',
+            plan.description ? plan.description.replace(/"/g, '""') : '',
+            plan.plan_date,
+            plan.start_time || '',
+            plan.end_time || '',
+            plan.priority || '',
+            plan.status || '',
+            plan.project ? plan.project.name : '',
+            plan.task ? plan.task.title : ''
+        ].join(',');
+        csvContent += row + "\n";
+    });
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "tomorrow_plans_export_" + new Date().toISOString().slice(0, 10) + ".csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+@endpush
 @endsection

@@ -13,45 +13,53 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        
         $stats = [
-            'total_projects' => Project::count(),
-            'active_projects' => Project::where('status', 'in_progress')->count(),
-            'completed_projects' => Project::where('status', 'completed')->count(),
-            'total_tasks' => Task::count(),
-            'completed_tasks' => Task::where('status', 'completed')->count(),
-            'pending_tasks' => Task::whereIn('status', ['todo', 'in_progress'])->count(),
+            'total_projects' => $user->projects()->count(),
+            'active_projects' => $user->projects()->where('status', 'in_progress')->count(),
+            'completed_projects' => $user->projects()->where('status', 'completed')->count(),
+            'total_tasks' => $user->tasks()->count(),
+            'completed_tasks' => $user->tasks()->where('status', 'completed')->count(),
+            'pending_tasks' => $user->tasks()->whereIn('status', ['todo', 'in_progress'])->count(),
         ];
 
-        $recent_projects = Project::with('tasks')
+        $recent_projects = $user->projects()
+            ->with('tasks')
             ->orderBy('updated_at', 'desc')
             ->take(5)
             ->get();
 
-        $upcoming_deadlines = Project::where('deadline', '>=', now())
+        $upcoming_deadlines = $user->projects()
+            ->where('deadline', '>=', now())
             ->where('deadline', '<=', now()->addDays(7))
             ->where('status', '!=', 'completed')
             ->orderBy('deadline')
             ->take(5)
             ->get();
 
-        $overdue_projects = Project::where('deadline', '<', now())
+        $overdue_projects = $user->projects()
+            ->where('deadline', '<', now())
             ->where('status', '!=', 'completed')
             ->orderBy('deadline')
             ->take(5)
             ->get();
 
-        $recent_activities = Activity::with(['project', 'task'])
+        $recent_activities = $user->activities()
+            ->with(['project', 'task'])
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->get();
 
-        $unread_notifications = Notification::unread()
+        $unread_notifications = $user->notifications()
+            ->unread()
             ->with(['project', 'task'])
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
 
-        $tomorrow_plans = TomorrowPlan::tomorrow()
+        $tomorrow_plans = $user->tomorrowPlans()
+            ->tomorrow()
             ->with(['project', 'task'])
             ->orderBy('start_time')
             ->get();

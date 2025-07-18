@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Tasks - DevTime')
 @section('page-title', 'Tasks')
@@ -97,7 +97,7 @@
                         </div>
 
                         @if($task->description)
-                            <p class="card-text text-muted small mb-3">{{ Str::limit($task->description, 80) }}</p>
+                            <p class="card-text text-muted small mb-3">{{ Str::limit(strip_tags($task->description), 80) }}</p>
                         @endif
 
                         <div class="mb-3">

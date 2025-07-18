@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Activity extends Model
 {
     protected $fillable = [
+        'user_id',
         'project_id',
         'task_id',
         'title',
@@ -22,6 +23,11 @@ class Activity extends Model
     protected $casts = [
         'activity_date' => 'date',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function project(): BelongsTo
     {

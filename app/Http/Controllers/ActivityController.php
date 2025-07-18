@@ -13,7 +13,8 @@ class ActivityController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Activity::with(['project', 'task']);
+        $user = auth()->user();
+        $query = $user->activities()->with(['project', 'task']);
 
         // Apply filters
         if ($request->filled('project')) {
@@ -36,8 +37,8 @@ class ActivityController extends Controller
             ->orderBy('start_time', 'desc')
             ->paginate(15);
 
-        $projects = Project::all();
-        $tasks = Task::with('project')->get();
+        $projects = $user->projects()->get();
+        $tasks = $user->tasks()->with('project')->get();
 
         return view('activities.index', compact('activities', 'projects', 'tasks'));
     }

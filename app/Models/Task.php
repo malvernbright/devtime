@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Task extends Model
 {
     protected $fillable = [
+        'user_id',
         'project_id',
         'title',
         'description',
@@ -23,6 +24,11 @@ class Task extends Model
     protected $casts = [
         'due_date' => 'date',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function project(): BelongsTo
     {

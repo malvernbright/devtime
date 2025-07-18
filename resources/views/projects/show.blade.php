@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', $project->name . ' - DevTime')
 @section('page-title', $project->name)
@@ -24,7 +24,9 @@
             </div>
             <div class="card-body">
                 @if($project->description)
-                    <p class="text-muted">{{ $project->description }}</p>
+                    <div class="wysiwyg-content">
+                        {!! $project->description !!}
+                    </div>
                 @endif
 
                 <div class="row">
@@ -108,7 +110,7 @@
                                         </a>
                                     </h6>
                                     @if($task->description)
-                                        <p class="mb-1 text-muted">{{ Str::limit($task->description, 100) }}</p>
+                                        <p class="mb-1 text-muted">{{ Str::limit(strip_tags($task->description), 100) }}</p>
                                     @endif
                                     <small class="text-muted">
                                         @if($task->due_date)

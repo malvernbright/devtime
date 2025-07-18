@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', $tomorrowPlan->title . ' - Tomorrow Plans')
 @section('page-title', $tomorrowPlan->title)
@@ -29,7 +29,9 @@
             </div>
             <div class="card-body">
                 @if($tomorrowPlan->description)
-                    <p class="text-muted">{{ $tomorrowPlan->description }}</p>
+                    <div class="bg-light p-3 rounded mb-3 wysiwyg-content">
+                        {!! $tomorrowPlan->description !!}
+                    </div>
                 @endif
 
                 <div class="row">

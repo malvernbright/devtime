@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Edit Activity - DevTime')
 @section('page-title', 'Edit Activity')
@@ -14,7 +14,7 @@
                     
                     <div class="mb-3">
                         <label for="description" class="form-label">Activity Description</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" 
+                        <textarea class="form-control wysiwyg-editor @error('description') is-invalid @enderror" 
                                   id="description" name="description" rows="3" 
                                   placeholder="Describe what you worked on..." required>{{ old('description', $activity->description) }}</textarea>
                         @error('description')
@@ -116,7 +116,7 @@
 
                     <div class="mb-3">
                         <label for="notes" class="form-label">Notes (Optional)</label>
-                        <textarea class="form-control @error('notes') is-invalid @enderror" 
+                        <textarea class="form-control wysiwyg-editor @error('notes') is-invalid @enderror" 
                                   id="notes" name="notes" rows="2" 
                                   placeholder="Additional notes about this activity...">{{ old('notes', $activity->notes) }}</textarea>
                         @error('notes')

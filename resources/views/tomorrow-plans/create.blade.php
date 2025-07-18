@@ -1,13 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Create Tomorrow Plan - DevTime')
 @section('page-title', 'Create Tomorrow Plan')
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-10 col-xl-8">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body p-4">
                 <form method="POST" action="{{ route('tomorrow-plans.store') }}">
                     @csrf
                     
@@ -40,7 +40,7 @@
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <textarea class="form-control @error('description') is-invalid @enderror" 
-                                  id="description" name="description" rows="3">{{ old('description') }}</textarea>
+                                  id="description" name="description" rows="5" data-tinymce="true">{{ old('description') }}</textarea>
                         @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

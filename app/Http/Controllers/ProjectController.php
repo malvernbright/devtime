@@ -11,7 +11,8 @@ class ProjectController extends Controller
 {
     public function index(): View
     {
-        $projects = Project::with('tasks')
+        $projects = auth()->user()->projects()
+            ->with('tasks')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -35,6 +36,7 @@ class ProjectController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        $validated['user_id'] = auth()->id();
         $project = Project::create($validated);
 
         return redirect()->route('projects.show', $project)
@@ -43,18 +45,41 @@ class ProjectController extends Controller
 
     public function show(Project $project): View
     {
-        $project->load(['tasks', 'activities', 'notifications']);
+        // Ensure the project belongs to the authenticated user
+        if ($project->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
+        $project->load([
+            'tasks' => function ($query) {
+                $query->where('user_id', auth()->id());
+            },
+            'activities' => function ($query) {
+                $query->where('user_id', auth()->id());
+            },
+            'notifications'
+        ]);
         
         return view('projects.show', compact('project'));
     }
 
     public function edit(Project $project): View
     {
+        // Ensure the project belongs to the authenticated user
+        if ($project->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         return view('projects.edit', compact('project'));
     }
 
     public function update(Request $request, Project $project): RedirectResponse
     {
+        // Ensure the project belongs to the authenticated user
+        if ($project->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -74,6 +99,11 @@ class ProjectController extends Controller
 
     public function destroy(Project $project): RedirectResponse
     {
+        // Ensure the project belongs to the authenticated user
+        if ($project->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $project->delete();
 
         return redirect()->route('projects.index')

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Activity Details - DevTime')
 @section('page-title', 'Activity Details')
@@ -29,7 +29,9 @@
                         <strong>Description:</strong>
                     </div>
                     <div class="col-sm-9">
-                        {{ $activity->description }}
+                        <div class="bg-light p-3 rounded wysiwyg-content">
+                            {!! $activity->description !!}
+                        </div>
                     </div>
                 </div>
 
@@ -112,8 +114,8 @@
                             <strong>Notes:</strong>
                         </div>
                         <div class="col-sm-9">
-                            <div class="bg-light p-3 rounded">
-                                {{ $activity->notes }}
+                            <div class="bg-light p-3 rounded wysiwyg-content">
+                                {!! $activity->notes !!}
                             </div>
                         </div>
                     </div>

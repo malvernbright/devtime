@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class TomorrowPlan extends Model
 {
     protected $fillable = [
+        'user_id',
         'project_id',
         'task_id',
         'title',
@@ -24,6 +25,11 @@ class TomorrowPlan extends Model
         'planned_date' => 'date',
         'is_completed' => 'boolean',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function project(): BelongsTo
     {

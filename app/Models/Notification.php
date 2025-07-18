@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Notification extends Model
 {
     protected $fillable = [
+        'user_id',
         'project_id',
         'task_id',
         'title',
@@ -21,6 +22,11 @@ class Notification extends Model
         'notification_date' => 'date',
         'is_read' => 'boolean',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function project(): BelongsTo
     {

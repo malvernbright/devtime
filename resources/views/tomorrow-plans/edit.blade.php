@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Edit ' . $tomorrowPlan->title . ' - DevTime')
 @section('page-title', 'Edit Tomorrow Plan')
@@ -40,7 +40,7 @@
 
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" 
+                        <textarea class="form-control wysiwyg-editor @error('description') is-invalid @enderror" 
                                   id="description" name="description" rows="3">{{ old('description', $tomorrowPlan->description) }}</textarea>
                         @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>

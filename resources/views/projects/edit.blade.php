@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Edit ' . $project->name . ' - DevTime')
 @section('page-title', 'Edit Project')

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Projects - DevTime')
 @section('page-title', 'Projects')
@@ -8,11 +8,43 @@
         <a href="{{ route('projects.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i>New Project
         </a>
-        <a href="{{ route('reports.status') }}?date={{ date('Y-m-d') }}&location=ZAMBIA OPERATIONS" class="btn btn-outline-success">
-            <i class="fas fa-file-word me-2"></i>Export Project Status
+        <a href="#" class="btn btn-outline-success" onclick="exportProjects()">
+            <i class="fas fa-file-export me-2"></i>Export Projects
         </a>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+function exportProjects() {
+    // Simple CSV export functionality
+    const projects = @json($projects->toArray());
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Name,Description,Status,Start Date,Deadline,Priority,Progress\n";
+    
+    projects.forEach(project => {
+        const row = [
+            project.name,
+            project.description ? project.description.replace(/"/g, '""') : '',
+            project.status,
+            project.start_date,
+            project.deadline,
+            project.priority,
+            project.progress + '%'
+        ].join(',');
+        csvContent += row + "\n";
+    });
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "projects_export_" + new Date().toISOString().slice(0, 10) + ".csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+@endpush
 
 @section('content')
 <div class="row">
@@ -28,7 +60,7 @@
                     </div>
                     <div class="card-body">
                         @if($project->description)
-                            <p class="text-muted">{{ Str::limit($project->description, 100) }}</p>
+                            <p class="text-muted">{{ Str::limit(strip_tags($project->description), 100) }}</p>
                         @endif
                         
                         <div class="mb-3">

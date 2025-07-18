@@ -1,13 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', 'Create Task - DevTime')
 @section('page-title', 'Create New Task')
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-10 col-xl-8">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body p-4">
                 <form method="POST" action="{{ route('tasks.store') }}">
                     @csrf
                     
@@ -28,7 +28,8 @@
                                     id="project_id" name="project_id" required>
                                 <option value="">Select Project</option>
                                 @foreach($projects as $project)
-                                    <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>
+                                    <option value="{{ $project->id }}" 
+                                        {{ (old('project_id', $selectedProjectId) == $project->id) ? 'selected' : '' }}>
                                         {{ $project->name }}
                                     </option>
                                 @endforeach
@@ -42,7 +43,8 @@
                     <div class="mb-3">
                         <label for="description" class="form-label">Description (Optional)</label>
                         <textarea class="form-control @error('description') is-invalid @enderror" 
-                                  id="description" name="description" rows="3" 
+                                  id="description" name="description" rows="5" 
+                                  data-tinymce="true"
                                   placeholder="Describe the task in detail...">{{ old('description') }}</textarea>
                         @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>

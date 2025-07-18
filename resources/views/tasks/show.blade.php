@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.devtime')
 
 @section('title', $task->title . ' - DevTime')
 @section('page-title', 'Task Details')
@@ -30,8 +30,8 @@
                             <strong>Description:</strong>
                         </div>
                         <div class="col-sm-9">
-                            <div class="bg-light p-3 rounded">
-                                {{ $task->description }}
+                            <div class="bg-light p-3 rounded wysiwyg-content">
+                                {!! $task->description !!}
                             </div>
                         </div>
                     </div>
@@ -165,12 +165,12 @@
                                 <i class="fas fa-clock text-primary"></i>
                             </div>
                             <div class="flex-grow-1">
-                                <div class="fw-medium">{{ $activity->description }}</div>
+                                <div class="fw-medium">{!! $activity->description !!}</div>
                                 <div class="text-muted small">
-                                    {{ $activity->activity_date->format('M j, Y') }} • 
+                                    {{ $activity->activity_date ? $activity->activity_date->format('M j, Y') : 'No date' }} • 
                                     {{ number_format($activity->duration_minutes / 60, 1) }}h
                                     @if($activity->start_time && $activity->end_time)
-                                        • {{ $activity->start_time->format('H:i') }} - {{ $activity->end_time->format('H:i') }}
+                                        • {{ $activity->start_time }} - {{ $activity->end_time }}
                                     @endif
                                 </div>
                                 @if($activity->notes)
@@ -258,7 +258,7 @@
             <div class="card-body">
                 <div class="mb-3">
                     <strong>{{ $task->project->name }}</strong>
-                    <div class="small text-muted">{{ $task->project->description }}</div>
+                    <div class="small text-muted">{{ strip_tags($task->project->description) }}</div>
                 </div>
                 
                 <div class="mb-3">
