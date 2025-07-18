@@ -296,7 +296,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof tinymce !== 'undefined') {
                 tinymce.init({
-                    selector: '.wysiwyg-editor',
+                    selector: '.data-tinymce="true"',
                     height: 300,
                     menubar: false,
                     plugins: [

@@ -43,7 +43,7 @@
 
                     <div class="mb-3">
                         <label for="description" class="form-label">Description (Optional)</label>
-                        <textarea class="form-control wysiwyg-editor @error('description') is-invalid @enderror" 
+                        <textarea class="form-control data-tinymce="true" @error('description') is-invalid @enderror" 
                                   id="description" name="description" rows="3" 
                                   placeholder="Describe the task in detail...">{{ old('description', $task->description) }}</textarea>
                         @error('description')

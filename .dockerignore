@@ -1,10 +1,11 @@
-# Dependencies
+# Dependencies (will be installed in container)
 /node_modules
 /vendor
 
 # Environment files
 .env.local
 .env.*.local
+.env.example
 
 # IDE files
 .vscode
@@ -48,5 +49,16 @@ phpunit.xml
 
 # Docker files
 Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Build artifacts (will be built in container)
+/public/build
+/public/hot
+/public/storage
+
+# Development files
+vite.config.js.timestamp-*
+.env.backup
 docker-compose.yml
 .dockerignore

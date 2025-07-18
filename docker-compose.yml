@@ -7,9 +7,10 @@ services:
     container_name: devtime-app
     restart: unless-stopped
     environment:
-      - APP_ENV=production
+      - APP_ENV=local
       - APP_DEBUG=true
       - APP_KEY=base64:S+xqS/tMQ7/gM6VppBPk2GF3iSY6Ih8cI3z5dqxg5WE=
+      - APP_URL=http://localhost:8000
       - DB_CONNECTION=mysql
       - DB_HOST=db
       - DB_PORT=3306
@@ -19,6 +20,16 @@ services:
       - CACHE_STORE=file
       - SESSION_DRIVER=file
       - QUEUE_CONNECTION=sync
+      - VITE_APP_NAME=DevTime
+      - MAIL_MAILER=log
+      - LOG_CHANNEL=single
+      - BROADCAST_DRIVER=log
+      - FILESYSTEM_DISK=local
+      - SESSION_LIFETIME=120
+      - MEMCACHED_HOST=127.0.0.1
+      - REDIS_HOST=127.0.0.1
+      - REDIS_PASSWORD=null
+      - REDIS_PORT=6379
     volumes:
       - .:/var/www/html
       - /var/www/html/vendor

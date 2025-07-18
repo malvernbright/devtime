@@ -2,6 +2,23 @@
 
 DevTime is a comprehensive web-based project management application built with Laravel 12.x, designed specifically for managing development projects with advanced features for tracking progress, deadlines, and daily activities.
 
+## 🚀 Quick Start with Docker
+
+Get DevTime running in minutes with Docker:
+
+```bash
+# 1. Clone the repository
+git clone <repository-url>
+cd DevTimeLaravel
+
+# 2. Run the quick start script
+./quickstart.sh
+```
+
+**That's it!** DevTime will be available at [http://localhost:8000](http://localhost:8000)
+
+For detailed Docker deployment options, see [DOCKER_README.md](DOCKER_README.md).
+
 ## Features
 
 ### 🚀 Core Features

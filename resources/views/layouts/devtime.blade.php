@@ -185,7 +185,7 @@
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
             border-radius: 0.75rem;
-            padding: 1.5rem;
+            padding: 1.5rem 2rem;
             margin-bottom: 2rem;
             box-shadow: var(--card-shadow);
         }
@@ -259,7 +259,8 @@
         .main-content {
             margin-left: 260px;
             margin-top: 56px;
-            padding: 2rem;
+            padding: 2rem 1.5rem;
+            max-width: calc(100vw - 260px);
         }
         
         .content-wrapper {
@@ -267,6 +268,20 @@
             margin-top: 56px;
             min-height: calc(100vh - 56px);
             padding-top: 1rem;
+        }
+        
+        .container-fluid {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 0.75rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
         }
         
         @media (max-width: 768px) {
@@ -472,46 +487,46 @@
 
     <!-- Main Content -->
     <div class="content-wrapper">
-        <div class="main-content">
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-                    
-                    @if(session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-                    
-                    @if($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <ul class="mb-0">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-                    
-                    @if(isset($pageTitle) || View::hasSection('page-title'))
-                        <div class="page-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h1 class="h3 mb-0">@yield('page-title', $pageTitle ?? 'Page')</h1>
-                                <div class="page-actions">
-                                    @yield('page-actions')
-                                </div>
+        <div class="container-fluid">
+            <div class="main-content">
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+                
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+                
+                @if($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+                
+                @if(isset($pageTitle) || View::hasSection('page-title'))
+                    <div class="page-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h1 class="h3 mb-0">@yield('page-title', $pageTitle ?? 'Page')</h1>
+                            <div class="page-actions">
+                                @yield('page-actions')
                             </div>
                         </div>
-                    @endif
-                    
-                    @yield('content')
-                </div>
-            </main>
+                    </div>
+                @endif
+                
+                @yield('content')
+            </div>
         </div>
     </div>
 
@@ -537,7 +552,7 @@
         
         // Initialize TinyMCE
         document.addEventListener('DOMContentLoaded', function() {
-            const textareas = document.querySelectorAll('textarea[data-tinymce="true"], textarea.wysiwyg-editor');
+            const textareas = document.querySelectorAll('textarea[data-tinymce="true"], textarea.data-tinymce="true"');
             textareas.forEach(function(textarea) {
                 tinymce.init({
                     target: textarea,
@@ -547,11 +562,13 @@
                         'advlist autolink lists link image charmap preview anchor',
                         'searchreplace visualblocks code fullscreen',
                         'insertdatetime table paste code help wordcount',
-                        'emoticons template codesample'
+                        'emoticons template codesample export print'
                     ],
-                    toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | codesample emoticons | removeformat | preview code fullscreen | help',
+                    toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | codesample emoticons | export print | removeformat | preview code fullscreen | help',
                     content_css: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
                     skin: 'oxide',
+                    export_cors_hosts: ['*'],
+                    export_image_proxy: 'https://api.tinymce.com/v1/imageproxy',
                     content_style: `
                         body { 
                             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
@@ -595,6 +612,8 @@
                         {text: 'SQL', value: 'sql'},
                         {text: 'JSON', value: 'json'}
                     ],
+                    export_format: 'docx',
+                    export_cors_hosts: ['*'],
                     setup: function(editor) {
                         editor.on('init', function() {
                             editor.getContainer().style.transition = 'border-color 0.3s ease';

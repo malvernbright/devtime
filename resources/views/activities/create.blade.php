@@ -5,16 +5,17 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-10 col-xl-8">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body p-4">
                 <form method="POST" action="{{ route('activities.store') }}">
                     @csrf
                     
                     <div class="mb-3">
                         <label for="description" class="form-label">Activity Description</label>
-                        <textarea class="form-control wysiwyg-editor @error('description') is-invalid @enderror" 
-                                  id="description" name="description" rows="3" 
+                        <textarea class="form-control @error('description') is-invalid @enderror" 
+                                  id="description" name="description" rows="5" 
+                                  data-tinymce="true"
                                   placeholder="Describe what you worked on..." required>{{ old('description') }}</textarea>
                         @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -113,7 +114,7 @@
 
                     <div class="mb-3">
                         <label for="notes" class="form-label">Notes (Optional)</label>
-                        <textarea class="form-control wysiwyg-editor @error('notes') is-invalid @enderror" 
+                        <textarea class="form-control data-tinymce="true" @error('notes') is-invalid @enderror" 
                                   id="notes" name="notes" rows="2" 
                                   placeholder="Additional notes about this activity...">{{ old('notes') }}</textarea>
                         @error('notes')
